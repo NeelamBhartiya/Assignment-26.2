@@ -1,0 +1,57 @@
+#4 To get names of city which are in country canada
+mysql> SELECT city FROM sakila.city WHERE country_id = ANY (SELECT country_id FROM sakila.country WHERE country LIKE 'Canada%');
++---------------+
+| city          |
++---------------+
+| Gatineau      |
+| Halifax       |
+| Lethbridge    |
+| London        |
+| Oshawa        |
+| Richmond Hill |
+| Vancouver     |
++---------------+
+
+
+
+
+**To get first name and last name of customers which are from country Canada
+
+mysql> SELECT last_name,first_name FROM sakila.customer WHERE address_id = ANY (SELECT city_id FROM sakila.city WHERE country_id = ANY (SELECT country_id FROM sakila.country WHERE country LIKE 'Canada%')) ORDER BY last_name,first_name;
++-----------+------------+
+| last_name | first_name |
++-----------+------------+
+| BANDA     | EVERETT    |
+| BATES     | DAISY      |
+| CULPEPPER | EUGENE     |
+| GRIGSBY   | THOMAS     |
+| LAWRENCE  | LAURIE     |
+| OLSON     | ANNETTE    |
+| SIKES     | FRANCIS    |
++-----------+------------+
+
+
+#5 How many customers are from Brazil?? 
+mysql> select count(ID) from customer_list where country="Brazil";
+
++-----------+
+| count(ID) |
++-----------+
+|        28 |
++-----------+
+
+#6 Return the "popular countries"? (that is, the ones with more than 20 customer). For each such country, return its name and its correspond number of customers. Order the result by the number of customers (descending). 
+
+mysql> select Country,Count(ID) from customer_list group by country having count(ID)>20 order by Count(ID) desc;
++--------------------+-----------+
+| country            | Count(ID) |
++--------------------+-----------+
+| India              |        60 |
+| China              |        53 |
+| United States      |        36 |
+| Japan              |        31 |
+| Mexico             |        30 |
+| Brazil             |        28 |
+| Russian Federation |        28 |
++--------------------+-----------+
+7 rows in set, 3 warnings (0.01 sec)
